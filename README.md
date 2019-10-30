@@ -1,3 +1,56 @@
+# React Component Loader
+
+In my little experience with React (and in general with any other libraries or frameworks) I have had the repetitive task to control the load of the components and give to the user any feedback until the component or element loads.
+
+Maybe there is already any powerfull component to do this but it was an oportunity to do it by myself not for reinvent the wheel rather to know another not so basic aspects of React.
+
+The basic idea is that if we need to load a component but first we need to call to a service to obtain the data we have to show to the user that the task is in progress and then load de component or any error template depending on the result of the task.
+
+So we have three buttons in a Tab component that tell to the ComponentLoader what component we want to load and what service we need to call to obtain the necessary data and do it:
+
+![scheme](scheme.png "scheme")
+
+```
+<div className="App">
+  <header className="App-header">
+    <Tab onSelect={(value) => setSelected(value)}></Tab>
+    <br></br>
+    <ComponentLoader toLoad={selected}></ComponentLoader>
+  </header>
+</div>
+```
+
+The Tab component has the configuration of each component that we can load with the ComponentLoader:
+
+```
+{
+  name: 'orangeComponent',
+  tag: <OrangeComponent />,
+  props:[
+    {name: 'firstDataIn', dataKey: 'count'},
+    {name: 'secondDataIn', dataKey: 'msg'}
+  ],
+  dataFn: fetchOrangeData
+}
+
+// fetchOrangeData is the function that we have to call to obtain the data and 
+// according to the configuration must be return:
+// {
+//   count: 'some value',
+//   msg: 'mose message'
+// }
+```
+
+and when we click any button this configuration is stored in the state of App in order to give it to the ComponentLoader
+who will create this react element:
+```
+<OrangeComponent firstDataIn={requestedData.count} secondDataIn={requestedData.msg}>
+```
+
+this is the project:
+
+![project](project.png "project")
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
